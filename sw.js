@@ -2,7 +2,7 @@
 const BASE = self.location.pathname.replace(/sw\.js$/, '');  
 
 // Ubah setiap kali rilis versi baru
-const CACHE_VERSION = 'v4';  
+const CACHE_VERSION = 'v4.1';  
 const CACHE = 'fishing-' + CACHE_VERSION;
 
 const ASSETS = [
