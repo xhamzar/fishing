@@ -1,0 +1,144 @@
+:root{
+  --bg-top:#87ceeb;
+  --water-top:#00bfff;
+  --water-bottom:#0077be;
+  --panel-bg:rgba(255,255,255,0.85);
+  --accent:#ff6a00;
+  --muted:#6b7280;
+  --toast-bg: rgba(20,20,20,0.92);
+  --toast-color: #fff;
+  --aura-fiery: #ff4500;
+  --aura-mystic: #00bfff;
+  --aura-legendary-gold: #ffd700;
+  --aura-legendary-purple: #8a2be2;
+  --fish-common: #6B7280;
+  --fish-blue: #0077be;
+  --fish-rare: #8E44AD;
+  --fish-legend: #D9534F;
+  --fish-ancient: #4B0082;
+  --fish-mythical: #FF69B4;
+  --fish-cosmic: #001F3F;
+  --fish-rainbow: linear-gradient(45deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3);
+  --fish-dragon: linear-gradient(45deg, #FF4500, #8B0000);
+}
+
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg-top)}
+#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:linear-gradient(to top,var(--water-bottom) 60%,var(--bg-top) 100%)}
+#water{position:absolute;top:0;left:0;width:100%;height:60%;background:linear-gradient(to bottom,var(--water-top),var(--water-bottom));overflow:hidden}
+#rod{position:absolute;bottom:0;left:50%;width:8px;height:120px;background:#5c4033;transform:translateX(-50%);border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.25);z-index:10}
+#line{position:absolute;bottom:120px;left:50%;width:2px;height:35vh;background:#dcdcdc;transform:translateX(-50%)}
+#bobber{position:absolute;left:50%;bottom:calc(120px + 35vh);width:32px;height:32px;transform:translate(-50%,0);z-index:20;pointer-events:none;display:flex;align-items:center;justify-content:center;transition:bottom 0.9s cubic-bezier(.22,.9,.27,1)}
+.bobber-core{width:18px;height:18px;border-radius:50%;background:linear-gradient(180deg,#fff,#eee);border:3px solid #ff4d4f;box-shadow:0 4px 8px rgba(0,0,0,0.16);transform-origin:center}
+.bobber-tip{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:6px;height:10px;background:#222;border-radius:3px}
+#info{position:absolute;top:10px;left:10px;background:var(--panel-bg);padding:8px 12px;border-radius:8px;font-size:14px;backdrop-filter:blur(4px);min-width:220px}
+#info div{margin:4px 0}
+#controls{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
+@media (max-width:420px){#controls{gap:12px} .btn{padding:14px 18px; font-size:16px}}
+.btn{padding:10px 16px;border-radius:8px;border:none;color:#fff;font-weight:700;box-shadow:0 6px 14px rgba(0,0,0,0.15);cursor:pointer}
+#castBtn{background:linear-gradient(90deg,var(--accent),#ff9a00)}
+#reelBtn{background:linear-gradient(90deg,#0d6efd,#0069d9);display:none;position:relative}
+#reelTapHint{position:absolute;left:50%;top:-28px;transform:translateX(-50%);font-size:12px;color:#fff;opacity:0.85;display:none}
+#menu{position:absolute;top:10px;right:10px;display:flex;gap:8px}
+.menuBtn{padding:8px 10px;background:#2f2f2f;color:#fff;border:none;border-radius:8px;font-size:13px}
+.panel{position:absolute;top:60px;right:10px;width:92vw;max-width:420px;background:var(--panel-bg);border-radius:8px;padding:12px;border:1px solid rgba(0,0,0,0.08);display:none;box-shadow:0 10px 30px rgba(0,0,0,0.12);max-height:70vh;overflow:auto;backdrop-filter:blur(8px)}
+.panel h3{margin:0 0 8px 0;font-size:16px}
+.row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.muted{color:var(--muted);font-size:13px;word-break:break-word}
+.shop-item{display:flex;flex-direction:column;align-items:flex-start;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.04);margin:6px 0;background:#fff;gap:4px}
+.small{font-size:13px;color:var(--muted);word-break:break-word}
+.inventory-list{display:flex;flex-direction:column;gap:8px}
+.inv-item{display:flex;flex-direction:column;align-items:flex-start;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.04);background:#fff;gap:4px}
+#pullContainer{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);width:72%;max-width:420px;display:none;z-index:60;pointer-events:none}
+#pullBarBg{width:100%;height:14px;background:rgba(0,0,0,0.12);border-radius:8px;overflow:hidden}
+#pullBar{height:100%;width:0%;background:linear-gradient(90deg,#ffd54a,#ff8c00);border-radius:8px}
+#pullTimer{margin-top:8px;font-size:13px;color:#fff;text-align:center}
+.ripple{position:absolute;left:50%;bottom:calc(120px + 35vh - 6px);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.45);transform:translate(-50%,-50%) scale(0.6);pointer-events:none;animation:rippleAnim 900ms ease-out forwards;z-index:15;filter:blur(.6px)}
+@keyframes rippleAnim{0%{opacity:1;transform:translate(-50%,-50%) scale(0.6)}60%{opacity:0.7;transform:translate(-50%,-50%) scale(1.6)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.6)}}
+.ripple-ring{position:absolute;left:50%;bottom:calc(120px + 35vh - 6px);transform:translate(-50%,-50%) scale(0);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:12px;height:12px;pointer-events:none;animation:ring 900ms ease-out forwards;z-index:14}
+@keyframes ring{0%{opacity:1;transform:translate(-50%,-50%) scale(0.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.6)}}
+.bubble{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.85);opacity:.9;filter:blur(.2px);animation:bubbleUp 1.2s linear forwards;z-index:12}
+@keyframes bubbleUp{from{transform:translateY(0);opacity:1}to{transform:translateY(-60px);opacity:0}}
+#toast{position:fixed;left:50%;top:50%;transform: translate(-50%, -50%);background:var(--toast-bg);color:var(--toast-color);padding:10px 14px;border-radius:10px;font-weight:600;opacity:0;pointer-events:none;z-index:200;transition: opacity .2s, transform .2s;}
+#toast.show{opacity:1;transform: translate(-50%, -50%);}
+#rodEnchantLabel{font-weight:700;color:#0b5394}
+.enchant-badge{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:700;border:1px solid rgba(0,0,0,0.06);background:#fff;margin-left:6px}
+.tiny{font-size:12px}
+@media (min-width:760px){.panel{width:360px}}
+#caughtImg{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.18);z-index:220}
+#catchEffect{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:20px;background:rgba(255,255,255,0.95);padding:8px 12px;border-radius:8px;z-index:230}
+
+/* Partikel enchant (pseudo-elements) */
+#bobber::before,
+#bobber::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+  z-index: -1;
+}
+#bobber[data-enchant="lucky"]::before,
+#bobber[data-enchant="deep"]::before,
+#bobber[data-enchant="steady"]::before,
+#bobber[data-enchant="golden"]::before,
+#bobber[data-enchant="golden"]::after,
+#bobber[data-enchant="ancient"]::before {
+  display: block;
+}
+@keyframes pulseGlow { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.4}50%{transform:translate(-50%,-50%) scale(1.9);opacity:0.7} }
+@keyframes sinkBubble { 0%{transform:translate(-50%,-100%);opacity:1}100%{transform:translate(-50%,200%);opacity:0} }
+@keyframes orbit { from{transform:translate(-50%,-50%) rotate(0deg) translateX(25px) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg) translateX(25px) rotate(-360deg)} }
+@keyframes sparkle { 0%,100%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)} }
+@keyframes swirl { 0%{opacity:0.7;transform:translate(-50%,-50%) scale(0.8) rotate(0deg);border-width:4px} 100%{opacity:0;transform:translate(-50%,-50%) scale(2.5) rotate(180deg);border-width:1px} }
+
+#bobber[data-enchant="lucky"]::before { width:20px;height:20px;background:#fffb00;box-shadow:0 0 15px 5px #fffb00;animation:pulseGlow 2.5s ease-in-out infinite; }
+#bobber[data-enchant="deep"]::before { width:10px;height:10px;background:#00d5ff;box-shadow:0 0 10px 2px #00d5ff;animation:sinkBubble 3s linear infinite;animation-delay:-1.5s;}
+#bobber[data-enchant="steady"]::before { width:6px;height:6px;background:#cccccc;opacity:1;animation:orbit 3s linear infinite;}
+#bobber[data-enchant="golden"]::before,#bobber[data-enchant="golden"]::after { width:8px;height:8px;background:#ffd700;box-shadow:0 0 8px 2px #ffd700;animation:sparkle 1.8s ease-in-out infinite;}
+#bobber[data-enchant="golden"]::after { animation-delay:-0.9s; transform: translate(-50%,-50%) scale(0.5) rotate(45deg); }
+#bobber[data-enchant="ancient"]::before { width:30px;height:30px;background:transparent;border:4px solid #8e44ad;box-shadow:0 0 15px 3px #8e44ad;animation:swirl 2s ease-out infinite; }
+
+/* Pull particles */
+#pullEffectsContainer { position:absolute; bottom:180px; left:50%; transform:translateX(-50%); width:300px; height:100px; pointer-events:none; z-index:50; overflow:hidden; }
+.pull-particle { position:absolute; left:50%; bottom:0; border-radius:50%; opacity:0; animation:pullParticleAnim 1.2s ease-out forwards; }
+@keyframes pullParticleAnim { 0%{transform:translate(-50%,0) scale(0.5);opacity:1} 100%{transform:translate(var(--end-x), -100px) scale(1);opacity:0} }
+/* particle variants (common, blue, rare, legend, ancient, mythical, cosmic, rainbow, dragon) */
+.pull-particle.common{width:8px;height:8px;background:rgba(255,255,255,0.7);filter:blur(1px)}
+.pull-particle.blue{width:10px;height:10px;background:#00d5ff;box-shadow:0 0 10px 2px #00d5ff}
+.pull-particle.rare{width:12px;height:12px;background:#ffd700;box-shadow:0 0 12px 3px #ffd700}
+.pull-particle.legend{width:14px;height:14px;background:#D9534F;box-shadow:0 0 15px 4px #D9534F;border:1px solid #fff}
+.pull-particle.ancient{width:12px;height:12px;background:var(--fish-ancient);box-shadow:0 0 12px 3px var(--fish-ancient);animation:swirl 1.5s ease-in-out infinite}
+.pull-particle.mythical{width:10px;height:10px;background:var(--fish-mythical);box-shadow:0 0 10px 2px var(--fish-mythical);animation:pulseGlow 2s ease-in-out infinite}
+.pull-particle.cosmic{width:14px;height:14px;background:var(--fish-cosmic);box-shadow:0 0 15px 4px #ffffff;border:1px solid #ffd700}
+.pull-particle.rainbow{width:12px;height:12px;background:var(--fish-rainbow);box-shadow:0 0 12px 3px #ffffff;animation:orbit 2s linear infinite}
+.pull-particle.dragon{width:14px;height:14px;background:var(--fish-dragon);box-shadow:0 0 15px 4px #FF4500;animation:pulseGlow 1.5s ease-in-out infinite}
+
+/* Rod aura */
+#rod::before,#rod::after{content:'';position:absolute;left:50%;top:0;width:100%;height:100%;transform:translateX(-50%);pointer-events:none;display:none;z-index:-1}
+#rod[data-aura="fiery"]::before,#rod[data-aura="mystic"]::before,#rod[data-aura="legendary"]::before,#rod[data-aura="legendary"]::after{display:block}
+@keyframes fieryPulse{0%,100%{opacity:0.6;transform:translateX(-50%) scaleY(1);box-shadow:0 0 10px 2px var(--aura-fiery)}50%{opacity:1;transform:translateX(-50%) scaleY(1.05);box-shadow:0 0 20px 5px var(--aura-fiery)}}
+@keyframes mysticFlow{0%{opacity:0.5;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-20px)}}
+@keyframes legendaryGlow{0%,100%{opacity:0.4;transform:translateX(-50%) scale(1.1)}50%{opacity:0.8;transform:translateX(-50%) scale(1.2)}}
+@keyframes legendarySpark{0%,100%{opacity:0}50%{opacity:1}}
+#rod[data-aura="fiery"]::before{background:linear-gradient(to top,transparent,var(--aura-fiery));opacity:0.6;filter:blur(2px);animation:fieryPulse 2s ease-in-out infinite}
+#rod[data-aura="mystic"]::before{width:4px;height:8px;background:var(--aura-mystic);border-radius:50%;box-shadow:0 0 8px 2px var(--aura-mystic);animation:mysticFlow 1.5s linear infinite;top:auto;bottom:100%}
+#rod[data-aura="legendary"]::before{background:radial-gradient(circle,var(--aura-legendary-gold),transparent);filter:blur(3px);animation:legendaryGlow 3s ease-in-out infinite}
+#rod[data-aura="legendary"]::after{width:6px;height:6px;background:var(--aura-legendary-purple);box-shadow:0 0 10px 3px var(--aura-legendary-purple);animation:legendarySpark 2s ease-in-out infinite alternate;top:50%}
+
+/* sdv mini-game visuals */
+#sdvContainer{pointer-events:auto;display:flex;justify-content:center;align-items:center;height:250px;pointer-events:none}
+#sdvTrack{position:relative;width:40px;height:100%;background:rgba(0,0,0,0.15);border-radius:6px;border:2px solid rgba(255,255,255,0.4);overflow:hidden}
+#sdvFishIcon{position:absolute;left:0;width:100%;height:30px;bottom:50%;font-size:28px;line-height:30px;text-align:center;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.3));transition:bottom 150ms linear}
+#sdvPlayerBar{position:absolute;left:0;width:100%;height:60px;bottom:0%;background:rgba(30,220,120,0.7);border:2px solid rgba(255,255,255,0.9);border-radius:4px;box-sizing:border-box;transition:bottom 50ms linear}
+
+/* museum/mission styles */
+.museum-item{display:flex;align-items:center;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.04);margin:6px 0;background:#fff;gap:8px}
+.museum-img{width:60px;height:60px;border-radius:4px;box-shadow:0 0 6px rgba(0,0,0,0.1)}
+#missionList{display:flex;flex-direction:column;gap:8px}
+.mission-item{display:flex;flex-direction:column;align-items:flex-start;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.04);background:#fff;gap:4px}
+.mission-progress{width:100%;height:8px;background:rgba(0,0,0,0.12);border-radius:4px;overflow:hidden}
+.mission-progress-bar{height:100%;background:linear-gradient(90deg,#28a745,#198754);transition:width 0.3s}

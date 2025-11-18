@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fishing Game — Pull Mini-Game (Revisi)</title>
+
+  <!-- PWA / mobile -->
+  <meta name="theme-color" content="#0077be" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+<body>
+  <div id="game">
+    <div id="water"></div>
+    <div id="rod" aria-hidden="true"></div>
+    <div id="line" aria-hidden="true"></div>
+    <div id="bobber" aria-hidden="true">
+      <div class="bobber-tip" aria-hidden="true"></div>
+      <div class="bobber-core" aria-hidden="true"></div>
+    </div>
+
+    <div id="pullEffectsContainer" aria-hidden="true"></div>
+
+    <div id="info" aria-live="polite">
+      <div>Jarak Saat Ini: <span id="current">0.0</span> FT</div>
+      <div>Jarak Maksimum: <span id="max">0.0</span></div>
+      <div>Gold: <strong id="gold">0</strong></div>
+      <div>Rod Level: <strong id="rodLevel">1</strong> <span id="rodEnchantLabel">Enchant: <span id="rodEnchant" class="enchant-badge">None</span></span></div>
+    </div>
+
+    <div id="controls">
+      <button id="castBtn" class="btn">Lempar Kail</button>
+      <button id="reelBtn" class="btn">
+        Tarik
+        <div id="reelTapHint">Ketuk cepat!</div>
+      </button>
+    </div>
+
+    <div id="pullContainer">
+      <div id="sdvContainer" style="display: none; margin-bottom: 8px;">
+          <div id="sdvTrack">
+              <div id="sdvFishIcon">🐟</div>
+              <div id="sdvPlayerBar"></div>
+          </div>
+      </div>
+
+      <div id="pullBarBg"><div id="pullBar"></div></div>
+      <div id="pullTimer">Waktu: <span id="pullTime">0.0</span>s</div>
+    </div>
+
+    <div id="menu">
+      <button class="menuBtn" id="shopBtn">Shop</button>
+      <button class="menuBtn" id="invBtn">Inventory</button>
+      <button class="menuBtn" id="museumBtn">Museum</button>
+      <button class="menuBtn" id="missionBtn">Misi</button>
+      <button class="menuBtn" id="settingsBtn">Pengaturan</button>
+    </div>
+
+    <!-- Panels -->
+    <div id="shopPanel" class="panel" role="dialog" aria-hidden="true">
+      <h3>Toko</h3>
+      <div class="muted">Gold: <strong id="shopGold">0</strong></div>
+      <div class="shop-item">
+        <div>
+          <div><strong>Upgrade Rod</strong></div>
+          <div class="small">Tingkatkan jangkauan dan sedikit meningkatkan input power.</div>
+        </div>
+        <div>
+          <div class="small" id="upgradePriceUI">100</div>
+          <button class="btn" id="buyUpgradeBtn" style="margin-left:8px;background:#198754">Beli</button>
+        </div>
+      </div>
+
+      <div style="margin-top:8px"><strong>Enchant Gacha</strong><div class="small muted">Beli gacha untuk mendapat enchant acak. Enchant baru akan langsung terpasang menggantikan yang lama.</div></div>
+
+      <div class="shop-item">
+        <div>
+          <div><strong>Enchant Gacha</strong></div>
+          <div class="small">Mendapat 1 enchant acak (Lucky, Deep, Steady, Golden, Ancient).</div>
+        </div>
+        <div>
+          <div class="small">250</div>
+          <button class="btn" id="buyGachaBtn" style="margin-left:8px;background:#8e44ad">Beli Gacha</button>
+        </div>
+      </div>
+      <div style="margin-top:8px"><strong>Paket Coin</strong></div>
+      <div class="shop-item">
+        <div>
+          <div>+500 Gold (testing)</div>
+          <div class="small">Untuk testing</div>
+        </div>
+        <div>
+          <div class="small">10</div>
+          <button class="btn" id="buyCoinBtn" style="margin-left:8px;background:#8b5cf6">Beli</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="invPanel" class="panel" role="dialog" aria-hidden="true">
+      <h3>Inventory Ikan</h3>
+      <div class="muted small">Daftar ikan yang tertangkap. Klik untuk jual.</div>
+      <div style="margin-top:8px; display:flex; gap:8px;">
+        <button id="sellAllBtn" class="btn" style="background:#dc3545">Jual Semua</button>
+        <button id="closeInvBtn" class="btn" style="background:#6c757d">Tutup</button>
+      </div>
+      <div id="invList" class="inventory-list" style="margin-top:10px"></div>
+    </div>
+
+    <div id="museumPanel" class="panel" role="dialog" aria-hidden="true">
+      <h3>Museum Ikan</h3>
+      <div class="muted small">Koleksi ikan terbaikmu per jenis. Tangkap lebih banyak!</div>
+      <div id="museumList" class="inventory-list" style="margin-top:10px"></div>
+    </div>
+
+    <div id="missionPanel" class="panel" role="dialog" aria-hidden="true">
+      <h3>Misi</h3>
+      <div class="muted small">Selesaikan misi acak untuk dapat gold ekstra!</div>
+      <div id="missionList" style="margin-top:10px"></div>
+    </div>
+
+    <div id="settingsPanel" class="panel" role="dialog" aria-hidden="true">
+      <h3>Pengaturan</h3>
+      <div class="row"><div class="small">Seed PRNG</div><div id="seedVal" class="muted small"></div></div>
+      <div style="margin-top:8px;">
+        <button id="resetBtn" class="btn" style="background:#e55934">Reset Progress</button>
+      </div>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="app.js" defer></script>
+
+  <!-- pwa registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+          console.log('ServiceWorker registered.', reg);
+        }).catch(function(err){
+          console.warn('SW reg failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
