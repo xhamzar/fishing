@@ -22,25 +22,62 @@
   --fish-dragon: linear-gradient(45deg, #FF4500, #8B0000);
 }
 
-html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg-top)}
-#game{position:relative;width:100vw;height:100vh;overflow:hidden;background:linear-gradient(to top,var(--water-bottom) 60%,var(--bg-top) 100%)}
+html,body{
+  height:100%;
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background:var(--bg-top);
+  /* Mencegah seleksi teks global dan overscroll */
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:linear-gradient(to top,var(--water-bottom) 60%,var(--bg-top) 100%);
+  /* Disable touch actions browser (zoom, pan) pada area game */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 #water{position:absolute;top:0;left:0;width:100%;height:60%;background:linear-gradient(to bottom,var(--water-top),var(--water-bottom));overflow:hidden}
 #rod{position:absolute;bottom:0;left:50%;width:8px;height:120px;background:#5c4033;transform:translateX(-50%);border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.25);z-index:10}
 #line{position:absolute;bottom:120px;left:50%;width:2px;height:35vh;background:#dcdcdc;transform:translateX(-50%)}
 #bobber{position:absolute;left:50%;bottom:calc(120px + 35vh);width:32px;height:32px;transform:translate(-50%,0);z-index:20;pointer-events:none;display:flex;align-items:center;justify-content:center;transition:bottom 0.9s cubic-bezier(.22,.9,.27,1)}
 .bobber-core{width:18px;height:18px;border-radius:50%;background:linear-gradient(180deg,#fff,#eee);border:3px solid #ff4d4f;box-shadow:0 4px 8px rgba(0,0,0,0.16);transform-origin:center}
 .bobber-tip{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:6px;height:10px;background:#222;border-radius:3px}
-#info{position:absolute;top:10px;left:10px;background:var(--panel-bg);padding:8px 12px;border-radius:8px;font-size:14px;backdrop-filter:blur(4px);min-width:220px}
+#info{position:absolute;top:10px;left:10px;background:var(--panel-bg);padding:8px 12px;border-radius:8px;font-size:14px;backdrop-filter:blur(4px);min-width:220px;pointer-events: none;}
 #info div{margin:4px 0}
-#controls{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
+#controls{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);display:flex;gap:10px; z-index: 100;}
 @media (max-width:420px){#controls{gap:12px} .btn{padding:14px 18px; font-size:16px}}
-.btn{padding:10px 16px;border-radius:8px;border:none;color:#fff;font-weight:700;box-shadow:0 6px 14px rgba(0,0,0,0.15);cursor:pointer}
+
+.btn{
+  padding:10px 16px;
+  border-radius:8px;
+  border:none;
+  color:#fff;
+  font-weight:700;
+  box-shadow:0 6px 14px rgba(0,0,0,0.15);
+  cursor:pointer;
+  /* Mencegah highlight biru saat di-tap di Android/Mobile */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 #castBtn{background:linear-gradient(90deg,var(--accent),#ff9a00)}
 #reelBtn{background:linear-gradient(90deg,#0d6efd,#0069d9);display:none;position:relative}
-#reelTapHint{position:absolute;left:50%;top:-28px;transform:translateX(-50%);font-size:12px;color:#fff;opacity:0.85;display:none}
-#menu{position:absolute;top:10px;right:10px;display:flex;gap:8px}
-.menuBtn{padding:8px 10px;background:#2f2f2f;color:#fff;border:none;border-radius:8px;font-size:13px}
-.panel{position:absolute;top:60px;right:10px;width:92vw;max-width:420px;background:var(--panel-bg);border-radius:8px;padding:12px;border:1px solid rgba(0,0,0,0.08);display:none;box-shadow:0 10px 30px rgba(0,0,0,0.12);max-height:70vh;overflow:auto;backdrop-filter:blur(8px)}
+#reelTapHint{position:absolute;left:50%;top:-28px;transform:translateX(-50%);font-size:12px;color:#fff;opacity:0.85;display:none; white-space: nowrap;}
+#menu{position:absolute;top:10px;right:10px;display:flex;gap:8px; z-index: 150;}
+.menuBtn{padding:8px 10px;background:#2f2f2f;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;}
+
+.panel{position:absolute;top:60px;right:10px;width:92vw;max-width:420px;background:var(--panel-bg);border-radius:8px;padding:12px;border:1px solid rgba(0,0,0,0.08);display:none;box-shadow:0 10px 30px rgba(0,0,0,0.12);max-height:70vh;overflow:auto;backdrop-filter:blur(8px); z-index: 200; -webkit-overflow-scrolling: touch;}
 .panel h3{margin:0 0 8px 0;font-size:16px}
 .row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
 .muted{color:var(--muted);font-size:13px;word-break:break-word}
@@ -48,17 +85,19 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helv
 .small{font-size:13px;color:var(--muted);word-break:break-word}
 .inventory-list{display:flex;flex-direction:column;gap:8px}
 .inv-item{display:flex;flex-direction:column;align-items:flex-start;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.04);background:#fff;gap:4px}
+
 #pullContainer{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);width:72%;max-width:420px;display:none;z-index:60;pointer-events:none}
 #pullBarBg{width:100%;height:14px;background:rgba(0,0,0,0.12);border-radius:8px;overflow:hidden}
 #pullBar{height:100%;width:0%;background:linear-gradient(90deg,#ffd54a,#ff8c00);border-radius:8px}
-#pullTimer{margin-top:8px;font-size:13px;color:#fff;text-align:center}
+#pullTimer{margin-top:8px;font-size:13px;color:#fff;text-align:center; text-shadow: 0 1px 2px rgba(0,0,0,0.5);}
+
 .ripple{position:absolute;left:50%;bottom:calc(120px + 35vh - 6px);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.45);transform:translate(-50%,-50%) scale(0.6);pointer-events:none;animation:rippleAnim 900ms ease-out forwards;z-index:15;filter:blur(.6px)}
 @keyframes rippleAnim{0%{opacity:1;transform:translate(-50%,-50%) scale(0.6)}60%{opacity:0.7;transform:translate(-50%,-50%) scale(1.6)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.6)}}
 .ripple-ring{position:absolute;left:50%;bottom:calc(120px + 35vh - 6px);transform:translate(-50%,-50%) scale(0);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:12px;height:12px;pointer-events:none;animation:ring 900ms ease-out forwards;z-index:14}
 @keyframes ring{0%{opacity:1;transform:translate(-50%,-50%) scale(0.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.6)}}
 .bubble{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.85);opacity:.9;filter:blur(.2px);animation:bubbleUp 1.2s linear forwards;z-index:12}
 @keyframes bubbleUp{from{transform:translateY(0);opacity:1}to{transform:translateY(-60px);opacity:0}}
-#toast{position:fixed;left:50%;top:50%;transform: translate(-50%, -50%);background:var(--toast-bg);color:var(--toast-color);padding:10px 14px;border-radius:10px;font-weight:600;opacity:0;pointer-events:none;z-index:200;transition: opacity .2s, transform .2s;}
+#toast{position:fixed;left:50%;top:50%;transform: translate(-50%, -50%);background:var(--toast-bg);color:var(--toast-color);padding:10px 14px;border-radius:10px;font-weight:600;opacity:0;pointer-events:none;z-index:300;transition: opacity .2s, transform .2s; text-align: center; width: max-content; max-width: 80vw;}
 #toast.show{opacity:1;transform: translate(-50%, -50%);}
 #rodEnchantLabel{font-weight:700;color:#0b5394}
 .enchant-badge{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:700;border:1px solid rgba(0,0,0,0.06);background:#fff;margin-left:6px}
@@ -106,7 +145,7 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helv
 #pullEffectsContainer { position:absolute; bottom:180px; left:50%; transform:translateX(-50%); width:300px; height:100px; pointer-events:none; z-index:50; overflow:hidden; }
 .pull-particle { position:absolute; left:50%; bottom:0; border-radius:50%; opacity:0; animation:pullParticleAnim 1.2s ease-out forwards; }
 @keyframes pullParticleAnim { 0%{transform:translate(-50%,0) scale(0.5);opacity:1} 100%{transform:translate(var(--end-x), -100px) scale(1);opacity:0} }
-/* particle variants (common, blue, rare, legend, ancient, mythical, cosmic, rainbow, dragon) */
+/* particle variants */
 .pull-particle.common{width:8px;height:8px;background:rgba(255,255,255,0.7);filter:blur(1px)}
 .pull-particle.blue{width:10px;height:10px;background:#00d5ff;box-shadow:0 0 10px 2px #00d5ff}
 .pull-particle.rare{width:12px;height:12px;background:#ffd700;box-shadow:0 0 12px 3px #ffd700}
